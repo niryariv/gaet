@@ -41,19 +41,42 @@ class baseview(webapp.RequestHandler):
     __metaclass__ = baseview_meta
 
 
-    def render(self, path, tmpl_vars):
+    def render(self, output, content_type=None):
+        if content_type is not None:
+            self.response.headers["Content-Type"] = 'Content-type: %s' % content_type
+            
+        self.response.out.write(output)
+        
+    def render_template(self, path, tmpl_vars):
         '''
         Renders a template.
         path is the template's location inside app/templates (eg, for a template in "app/templates/hello/index.html" path would be "hello/index.html")
         Template variables can be either passed as dictionary to render() or stored in self.tmpl
         '''
-        
         template_path = os.path.join(os.path.dirname(__file__), '..', 'app', 'templates', path)
-        self.response.out.write(template.render(template_path, tmpl_vars))
+        self.render(template.render(template_path, tmpl_vars))
+    
+
+    def db_to_dict(self, db_obj):
+        ''' converts a DB object to a dictionary'''
+        out = {}
+        data = db_obj.__dict__['_entity']
+        for k in data:
+            out.update({k : str(data[k])})
+            
+        return out
         
-    def render_json(self, tmpl_vars):
-        # self.response.out.write(tmpl_vars)
-        self.response.headers["Content-Type"] = 'Content-type: application/json'
-        self.response.out.write(simplejson.dumps(tmpl_vars))
+    def render_json(self, data):
+        clean_data = data
+        
+        if hasattr(data, '__module__') and data.__module__ == 'app.models':
+            clean_data = self.db_to_dict(data)
+            
+        elif str(type(data)) == "<type 'list'>" and hasattr(data[0], '__module__') and data[0].__module__ == 'app.models':
+            clean_data = []
+            for i in data:
+                clean_data.append(self.db_to_dict(i))
 
-
+        self.render(simplejson.dumps(clean_data), 'application/json')
+        
+        

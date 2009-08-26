@@ -6,15 +6,12 @@ class Default(baseview):
 
     def get(self):
         
-        o = Opinion.all()
-        if o.count() == 0:
-            o = []
-        tmpl = { 
-                    "opinions": o
-                }
-        
-        self.render('opinions/index.html', tmpl)
-        #self.render_json(tmpl)
+        op = Opinion.all() #.fetch(1)
+
+        if self.request.get('format') == 'json':
+            self.render_json(op.fetch(10))
+        else:
+            self.render_template('opinions/index.html', { "opinions" : op })
         
         
     def post(self):
