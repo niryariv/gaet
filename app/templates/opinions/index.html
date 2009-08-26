@@ -1,0 +1,16 @@
+<h2>Opinions</h2>
+<i>Everybody's got one!</i>
+
+<p>
+{% for o in opinions %}
+	<blockquote>"{{ o.opinion }}"</blockquote>
+{% endfor %}
+<p>
+
+<p>	
+	<form action="/" method="post">
+		I think that:
+		<input type="text" name="opinion" />
+		<input type="submit" value="Say it!" />
+	</form>
+</p>

@@ -1,0 +1,10 @@
+This is a template for small GAE applications.
+
+It doesn't do much, it's basically meant as one step further than the default stub created by the GAE Launcher.
+
+The things it handles so far are:
+
+* Basic directory structure
+* Rails-like _method routing for easier PUT/DELTE
+* Convenience render() method for templates
+
