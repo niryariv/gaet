@@ -29,6 +29,24 @@ class baseview_meta(type):
 
         setattr(cls, 'post', post)
 
+
+        org_get = getattr(cls, 'get')
+
+        def get(self, *params, **kws):
+            p = list(params)
+            action_name = p.pop(0)
+            if action_name != '':
+                action = getattr(cls, action_name)
+                if len(p) == 0 and len(kws) ==0:
+                    action(self)
+                elif len(p) == 0:
+                    action(self, p)
+                else:
+                    action(self, p, kws)
+            else:
+                org_get(self, p, **kws)
+
+        setattr(cls, 'get', get)
         
 
 

@@ -4,7 +4,10 @@ from models import *
 
 class Default(baseview):
 
-    def get(self):
+    def get(self, name):
+        
+        # if name != '':
+        #     return getattr(self, name)()
         
         op = Opinion.all() #.fetch(1)
 
@@ -27,3 +30,6 @@ class Default(baseview):
     
     def delete(self):
         print 'DELETE'
+        
+    def edit(self):
+        print "EDIT!"

@@ -25,7 +25,7 @@ from app.views import Default
 
 
 def main():
-  application = webapp.WSGIApplication([('/', Default)],
+  application = webapp.WSGIApplication([('/(.*)', Default)],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)
 
