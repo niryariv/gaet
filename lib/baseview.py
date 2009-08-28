@@ -30,21 +30,21 @@ class baseview_meta(type):
         setattr(cls, 'post', post)
 
 
-        org_get = getattr(cls, 'get')
-
-        def get(self, *params, **kws):
-            p = list(params)
-            action_name = p.pop(0)
-            if action_name != '':
-                action = getattr(cls, action_name)
-                if len(p) == 0:
-                    action(self, *kws)
-                else:
-                    action(self, p, *kws)
-            else:
-                org_get(self, *params, **kws)
-
-        setattr(cls, 'get', get)
+        # org_get = getattr(cls, 'get')
+        # 
+        # def get(self, *params, **kws):
+        #     p = list(params)
+        #     action_name = p.pop(0)
+        #     if action_name != '':
+        #         action = getattr(cls, action_name)
+        #         if len(p) == 0:
+        #             action(self, *kws)
+        #         else:
+        #             action(self, p, *kws)
+        #     else:
+        #         org_get(self, *params, **kws)
+        # 
+        # setattr(cls, 'get', get)
         
 
 
@@ -63,7 +63,7 @@ class baseview(webapp.RequestHandler):
             
         self.response.out.write(output)
         
-    def render_template(self, path, tmpl_vars):
+    def render_template(self, path, tmpl_vars={}):
         '''
         Renders a template.
         path is the template's location inside app/templates (eg, for a template in "app/templates/hello/index.html" path would be "hello/index.html")
