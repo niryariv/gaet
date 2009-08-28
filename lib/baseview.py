@@ -37,14 +37,12 @@ class baseview_meta(type):
             action_name = p.pop(0)
             if action_name != '':
                 action = getattr(cls, action_name)
-                if len(p) == 0 and len(kws) ==0:
-                    action(self)
-                elif len(p) == 0:
-                    action(self, p)
+                if len(p) == 0:
+                    action(self, *kws)
                 else:
-                    action(self, p, kws)
+                    action(self, p, *kws)
             else:
-                org_get(self, p, **kws)
+                org_get(self, *params, **kws)
 
         setattr(cls, 'get', get)
         
